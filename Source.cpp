@@ -77,38 +77,58 @@ void BoardPrint(int size, int CompKingX, int CompKingY, int KingX, int KingY, in
 	}
 }
 
-void CompKingMove(int BoardSize, int& CompKingX, int& CompKingY, int KingX, int KingY, int Rook1X, int Rook1Y, int Rook2X, int Rook2Y, bool& end)
+void CompKingMove(int BoardSize, int& CompKingX, int& CompKingY, int KingX, int KingY, int Rook1X, int Rook1Y, int Rook2X, int Rook2Y, bool& end, bool& KingIsInCheck)
 {
 	if (CompKingX + 1 != Rook1X && CompKingY != Rook1Y && CompKingX + 1 != Rook2X && CompKingY != Rook2Y && CompKingX + 1 != BoardSize && CompKingX + 2 != KingX && CompKingY != KingY && CompKingX + 2 != KingX && CompKingY + 1 != KingY && CompKingX + 2 != KingX && CompKingY - 1 != KingY)
+	{
 		CompKingX++;
+		return;
+	}
 	else if (CompKingX + 1 != Rook1X && CompKingY + 1 != Rook1Y && CompKingX + 1 != Rook2X && CompKingY + 1 != Rook2Y && CompKingX + 1 != BoardSize && CompKingY + 1 != BoardSize && CompKingX + 2 != KingX && CompKingY != KingY && CompKingX + 2 != KingX && CompKingY + 1 != KingY && CompKingX + 2 != KingX && CompKingY + 2 != KingY && CompKingX + 1 != KingX && CompKingY + 2 != KingY && CompKingX != KingX && CompKingY + 2 != KingY)
 	{
 		CompKingX++;
 		CompKingY++;
+		return;
 	}
 	else if (CompKingX != Rook1X && CompKingY + 1 != Rook1Y && CompKingX != Rook2X && CompKingY + 1 != Rook2Y && CompKingY + 1 != BoardSize && CompKingX + 1 != KingX && CompKingY + 2 != KingY && CompKingX != KingX && CompKingY + 2 != KingY && CompKingX - 1 != KingX && CompKingY + 2 != KingY)
+	{
 		CompKingY++;
+		return;
+	}
 	else if (CompKingX - 1 != Rook1X && CompKingY + 1 != Rook1Y && CompKingX - 1 != Rook2X && CompKingY + 1 != Rook2Y && CompKingX - 1 >= 0 && CompKingY + 1 != BoardSize && CompKingX - 2 != KingX && CompKingY != KingY && CompKingX - 2 != KingX && CompKingY + 1 != KingY && CompKingX - 2 != KingX && CompKingY + 2 != KingY && CompKingX - 1 != KingX && CompKingY + 2 != KingY && CompKingX != KingX && CompKingY + 2 != KingY)
 	{
 		CompKingX--;
 		CompKingY++;
+		return;
 	}
 	else if (CompKingX - 1 != Rook1X && CompKingY != Rook1Y && CompKingX - 1 != Rook2X && CompKingY != Rook2Y && CompKingX - 1 >= 0 && CompKingX - 2 != KingX && CompKingY != KingY && CompKingX - 2 != KingX && CompKingY + 1 != KingY && CompKingX - 2 != KingX && CompKingY - 1 != KingY)
+	{
 		CompKingX--;
+		return;
+	}
 	else if (CompKingX - 1 != Rook1X && CompKingY - 1 != Rook1Y && CompKingX - 1 != Rook2X && CompKingY - 1 != Rook2Y && CompKingX - 1 >= 0 && CompKingY - 1 >= 0 && CompKingX - 2 != KingX && CompKingY != KingY && CompKingX - 2 != KingX && CompKingY - 1 != KingY && CompKingX - 2 != KingX && CompKingY - 2 != KingY && CompKingX - 1 != KingX && CompKingY - 2 != KingY && CompKingX != KingX && CompKingY - 2 != KingY)
 	{
 		CompKingX--;
 		CompKingY--;
+		return;
 	}
 	else if (CompKingX != Rook1X && CompKingY - 1 != Rook1Y && CompKingX != Rook2X && CompKingY - 1 != Rook2Y && CompKingY - 1 >= 0 && CompKingX + 1 != KingX && CompKingY - 2 != KingY && CompKingX != KingX && CompKingY - 2 != KingY && CompKingX - 1 != KingX && CompKingY - 2 != KingY)
+	{
 		CompKingY--;
+		return;
+	}
 	else if (CompKingX + 1 != Rook1X && CompKingY - 1 != Rook1Y && CompKingX + 1 != Rook2X && CompKingY - 1 != Rook2Y && CompKingX + 1 != BoardSize && CompKingY - 1 >= 0 && CompKingX + 2 != KingX && CompKingY != KingY && CompKingX + 2 != KingX && CompKingY - 1 != KingY && CompKingX + 2 != KingX && CompKingY - 2 != KingY && CompKingX + 1 != KingX && CompKingY - 2 != KingY && CompKingX != KingX && CompKingY - 2 != KingY)
 	{
 		CompKingX++;
 		CompKingY--;
+		return;
 	}
 	else
+	{
+		if (CompKingX == Rook1X || CompKingX == Rook2X || CompKingY == Rook1Y || CompKingY == Rook2Y)
+			KingIsInCheck = 1;
 		end = 1;
+	}
 }
 
 int MovesCounter = 1;
@@ -117,12 +137,16 @@ void turn(int BoardSize, int CompKingX, int CompKingY, int& KingX, int& KingY, i
 	char Y, Figure;
 	int X;
 	bool GameHasEnded = 0;
+	bool KingIsInCheck = 0;
 
 back:
 	cin >> Figure >> Y >> X;
 
 	while (!GameHasEnded)
 	{
+		
+		KingIsInCheck = 0;
+
 		if ((Figure != '1') && (Figure != 'K') && (Figure != '2'))
 		{
 			cout << "Invalid figure! Please try again: ";
@@ -141,7 +165,7 @@ back:
 			KingX = X;
 			KingY = int(Y - 97);
 
-			CompKingMove(BoardSize, CompKingX, CompKingY, KingX, KingY, Rook1X, Rook1Y, Rook2X, Rook2Y, GameHasEnded);
+			CompKingMove(BoardSize, CompKingX, CompKingY, KingX, KingY, Rook1X, Rook1Y, Rook2X, Rook2Y, GameHasEnded, KingIsInCheck);
 			BoardPrint(BoardSize, CompKingX, CompKingY, KingX, KingY, Rook1X, Rook1Y, Rook2X, Rook2Y);
 		}
 		if (Figure == '1')
@@ -208,10 +232,15 @@ back:
 			Rook1X = X;
 			Rook1Y = int(Y - 97);
 
-			CompKingMove(BoardSize, CompKingX, CompKingY, KingX, KingY, Rook1X, Rook1Y, Rook2X, Rook2Y, GameHasEnded);
+			CompKingMove(BoardSize, CompKingX, CompKingY, KingX, KingY, Rook1X, Rook1Y, Rook2X, Rook2Y, GameHasEnded, KingIsInCheck);
 
 			if (GameHasEnded)
 			{
+				if (!KingIsInCheck)
+				{
+					cout << "The game is a draw!";
+					return;
+				}
 				cout << "You won with " << MovesCounter << " moves!";
 				return;
 			}
@@ -280,10 +309,15 @@ back:
 			Rook2X = X;
 			Rook2Y = int(Y - 97);
 
-			CompKingMove(BoardSize, CompKingX, CompKingY, KingX, KingY, Rook1X, Rook1Y, Rook2X, Rook2Y, GameHasEnded);
+			CompKingMove(BoardSize, CompKingX, CompKingY, KingX, KingY, Rook1X, Rook1Y, Rook2X, Rook2Y, GameHasEnded, KingIsInCheck);
 
 			if (GameHasEnded)
 			{
+				if (!KingIsInCheck)
+				{
+					cout << "The game is a draw!";
+					return;
+				}
 				cout << "You won with " << MovesCounter << " moves!";
 				return;
 			}
@@ -350,6 +384,8 @@ int main()
 		}
 		else if (MenuChoice == 3)
 			return 0;
+
+		MovesCounter = 1;
 	}
 
 	return 0;
