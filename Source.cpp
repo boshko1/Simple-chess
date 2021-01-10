@@ -3,6 +3,14 @@
 #include<iomanip>
 using namespace std;
 
+int Abs(int number)
+{
+	if (number >= 0)
+		return number;
+	else
+		return number * -1;
+}
+
 void RandomPositions(int& CompKingX, int& CompKingY, int& KingX, int& KingY, int& Rook1X, int& Rook1Y, int& Rook2X, int& Rook2Y, int& BoardSize)
 {
 	CompKingX = rand() % BoardSize;
@@ -77,58 +85,200 @@ void BoardPrint(int size, int CompKingX, int CompKingY, int KingX, int KingY, in
 	}
 }
 
-void CompKingMove(int BoardSize, int& CompKingX, int& CompKingY, int KingX, int KingY, int Rook1X, int Rook1Y, int Rook2X, int Rook2Y, bool& end, bool& KingIsInCheck)
+void CompKingMove(int BoardSize, int& CompKingX, int& CompKingY, int KingX, int KingY, int& Rook1X, int& Rook1Y, int& Rook2X, int& Rook2Y, bool& end, bool& KingIsInCheck)
 {
-	if (CompKingX + 1 != Rook1X && CompKingY != Rook1Y && CompKingX + 1 != Rook2X && CompKingY != Rook2Y && CompKingX + 1 != BoardSize && CompKingX + 2 != KingX && CompKingY != KingY && CompKingX + 2 != KingX && CompKingY + 1 != KingY && CompKingX + 2 != KingX && CompKingY - 1 != KingY)
+	if (CompKingX + 1 != BoardSize && CompKingX + 2 != KingX && CompKingY != KingY && CompKingX + 2 != KingX && CompKingY + 1 != KingY && CompKingX + 2 != KingX && CompKingY - 1 != KingY)
 	{
-		CompKingX++;
-		return;
+		if (CompKingX + 1 != Rook1X && CompKingY != Rook1Y && CompKingX + 1 != Rook2X && CompKingY != Rook2Y)
+		{
+			CompKingX++;
+			return;
+		}
+		else if (CompKingX + 1 == Rook1X && CompKingY == Rook1Y && CompKingX + 1 != Rook2X && CompKingY != Rook2Y)
+		{
+			CompKingX++;
+			Rook1X = BoardSize + 1;
+			Rook1Y = BoardSize + 1;
+			return;
+		}
+		else if (CompKingX + 1 == Rook2X && CompKingY == Rook2Y && CompKingX + 1 != Rook1X && CompKingY != Rook1Y)
+		{
+			CompKingX++;
+			Rook2X = BoardSize + 2;
+			Rook2Y = BoardSize + 2;
+			return;
+		}
 	}
-	else if (CompKingX + 1 != Rook1X && CompKingY + 1 != Rook1Y && CompKingX + 1 != Rook2X && CompKingY + 1 != Rook2Y && CompKingX + 1 != BoardSize && CompKingY + 1 != BoardSize && CompKingX + 2 != KingX && CompKingY != KingY && CompKingX + 2 != KingX && CompKingY + 1 != KingY && CompKingX + 2 != KingX && CompKingY + 2 != KingY && CompKingX + 1 != KingX && CompKingY + 2 != KingY && CompKingX != KingX && CompKingY + 2 != KingY)
+	if (CompKingX + 1 != BoardSize && CompKingY + 1 != BoardSize && CompKingX + 2 != KingX && CompKingY != KingY && CompKingX + 2 != KingX && CompKingY + 1 != KingY && CompKingX + 2 != KingX && CompKingY + 2 != KingY && CompKingX + 1 != KingX && CompKingY + 2 != KingY && CompKingX != KingX && CompKingY + 2 != KingY)
 	{
-		CompKingX++;
-		CompKingY++;
-		return;
+		if (CompKingX + 1 != Rook1X && CompKingY + 1 != Rook1Y && CompKingX + 1 != Rook2X && CompKingY + 1 != Rook2Y)
+		{
+			CompKingX++;
+			CompKingY++;
+			return;
+		}
+		else if (CompKingX + 1 == Rook1X && CompKingY + 1 == Rook1Y && Rook1X != Rook2X && Rook1Y != Rook2Y)
+		{
+			CompKingX++;
+			CompKingY++;
+			Rook1X = BoardSize + 1;
+			Rook1Y = BoardSize + 1;
+			return;
+		}
+		else if (CompKingX + 1 == Rook2X && CompKingY + 1 == Rook2Y && Rook1X != Rook2X && Rook1Y != Rook2Y)
+		{
+			CompKingX++;
+			CompKingY++;
+			Rook2X = BoardSize + 2;
+			Rook2Y = BoardSize + 2;
+			return;
+		}
 	}
-	else if (CompKingX != Rook1X && CompKingY + 1 != Rook1Y && CompKingX != Rook2X && CompKingY + 1 != Rook2Y && CompKingY + 1 != BoardSize && CompKingX + 1 != KingX && CompKingY + 2 != KingY && CompKingX != KingX && CompKingY + 2 != KingY && CompKingX - 1 != KingX && CompKingY + 2 != KingY)
+	if (CompKingY + 1 != BoardSize && CompKingX + 1 != KingX && CompKingY + 2 != KingY && CompKingX != KingX && CompKingY + 2 != KingY && CompKingX - 1 != KingX && CompKingY + 2 != KingY)
 	{
-		CompKingY++;
-		return;
+		if (CompKingX != Rook1X && CompKingY + 1 != Rook1Y && CompKingX != Rook2X && CompKingY + 1 != Rook2Y)
+		{
+			CompKingY++;
+			return;
+		}
+		else if (CompKingX == Rook1X && CompKingY + 1 == Rook1Y && CompKingX != Rook2X && CompKingY + 1 != Rook2Y)
+		{
+			CompKingY++;
+			Rook1X = BoardSize + 1;
+			Rook1Y = BoardSize + 1;
+			return;
+		}
+		else if (CompKingX == Rook2X && CompKingY + 1 == Rook2Y && CompKingX != Rook1X && CompKingY + 1 != Rook1Y)
+		{
+			CompKingY++;
+			Rook2X = BoardSize + 1;
+			Rook2Y = BoardSize + 1;
+			return;
+		}
 	}
-	else if (CompKingX - 1 != Rook1X && CompKingY + 1 != Rook1Y && CompKingX - 1 != Rook2X && CompKingY + 1 != Rook2Y && CompKingX - 1 >= 0 && CompKingY + 1 != BoardSize && CompKingX - 2 != KingX && CompKingY != KingY && CompKingX - 2 != KingX && CompKingY + 1 != KingY && CompKingX - 2 != KingX && CompKingY + 2 != KingY && CompKingX - 1 != KingX && CompKingY + 2 != KingY && CompKingX != KingX && CompKingY + 2 != KingY)
+	if (CompKingX - 1 >= 0 && CompKingY + 1 != BoardSize && CompKingX - 2 != KingX && CompKingY != KingY && CompKingX - 2 != KingX && CompKingY + 1 != KingY && CompKingX - 2 != KingX && CompKingY + 2 != KingY && CompKingX - 1 != KingX && CompKingY + 2 != KingY && CompKingX != KingX && CompKingY + 2 != KingY)
 	{
-		CompKingX--;
-		CompKingY++;
-		return;
+		if (CompKingX + 1 != Rook1X && CompKingY - 1 != Rook1Y && CompKingX + 1 != Rook2X && CompKingY - 1 != Rook2Y)
+		{
+			CompKingX++;
+			CompKingY--;
+			return;
+		}
+		else if (CompKingX + 1 == Rook1X && CompKingY - 1 == Rook1Y && Rook1X != Rook2X && Rook1Y != Rook2Y)
+		{
+			CompKingX++;
+			CompKingY--;
+			Rook1X = BoardSize + 1;
+			Rook1Y = BoardSize + 1;
+			return;
+		}
+		else if (CompKingX + 1 == Rook2X && CompKingY - 1 == Rook2Y && Rook1X != Rook2X && Rook1Y != Rook2Y)
+		{
+			CompKingX++;
+			CompKingY--;
+			Rook2X = BoardSize + 2;
+			Rook2Y = BoardSize + 2;
+			return;
+		}
 	}
-	else if (CompKingX - 1 != Rook1X && CompKingY != Rook1Y && CompKingX - 1 != Rook2X && CompKingY != Rook2Y && CompKingX - 1 >= 0 && CompKingX - 2 != KingX && CompKingY != KingY && CompKingX - 2 != KingX && CompKingY + 1 != KingY && CompKingX - 2 != KingX && CompKingY - 1 != KingY)
+	if (CompKingX - 1 >= 0 && CompKingX - 2 != KingX && CompKingY != KingY && CompKingX - 2 != KingX && CompKingY + 1 != KingY && CompKingX - 2 != KingX && CompKingY - 1 != KingY)
 	{
-		CompKingX--;
-		return;
+		if (CompKingX - 1 != Rook1X && CompKingY != Rook1Y && CompKingX - 1 != Rook2X && CompKingY != Rook2Y)
+		{
+			CompKingX--;
+			return;
+		}
+		else if (CompKingX - 1 == Rook1X && CompKingY == Rook1Y && CompKingX - 1 != Rook2X && CompKingY != Rook2Y)
+		{
+			CompKingX--;
+			Rook1X = BoardSize + 1;
+			Rook1Y = BoardSize + 1;
+			return;
+		}
+		else if (CompKingX - 1 == Rook2X && CompKingY == Rook2Y && CompKingX - 1 != Rook1X && CompKingY != Rook1Y)
+		{
+			CompKingX--;
+			Rook2X = BoardSize + 2;
+			Rook2Y = BoardSize + 2;
+			return;
+		}
 	}
-	else if (CompKingX - 1 != Rook1X && CompKingY - 1 != Rook1Y && CompKingX - 1 != Rook2X && CompKingY - 1 != Rook2Y && CompKingX - 1 >= 0 && CompKingY - 1 >= 0 && CompKingX - 2 != KingX && CompKingY != KingY && CompKingX - 2 != KingX && CompKingY - 1 != KingY && CompKingX - 2 != KingX && CompKingY - 2 != KingY && CompKingX - 1 != KingX && CompKingY - 2 != KingY && CompKingX != KingX && CompKingY - 2 != KingY)
+	if (CompKingX - 1 >= 0 && CompKingY - 1 >= 0 && CompKingX - 2 != KingX && CompKingY != KingY && CompKingX - 2 != KingX && CompKingY - 1 != KingY && CompKingX - 2 != KingX && CompKingY - 2 != KingY && CompKingX - 1 != KingX && CompKingY - 2 != KingY && CompKingX != KingX && CompKingY - 2 != KingY)
 	{
-		CompKingX--;
-		CompKingY--;
-		return;
+		if (CompKingX - 1 != Rook1X && CompKingY - 1 != Rook1Y && CompKingX - 1 != Rook2X && CompKingY - 1 != Rook2Y)
+		{
+			CompKingX--;
+			CompKingY--;
+			return;
+		}
+		else if (CompKingX - 1 == Rook1X && CompKingY - 1 == Rook1Y && Rook1X != Rook2X && Rook1Y != Rook2Y)
+		{
+			CompKingX--;
+			CompKingY--;
+			Rook1X = BoardSize + 1;
+			Rook1Y = BoardSize + 1;
+			return;
+		}
+		else if (CompKingX - 1 == Rook2X && CompKingY - 1 == Rook2Y && Rook1X != Rook2X && Rook1Y != Rook2Y)
+		{
+			CompKingX--;
+			CompKingY--;
+			Rook2X = BoardSize + 2;
+			Rook2Y = BoardSize + 2;
+			return;
+		}
 	}
-	else if (CompKingX != Rook1X && CompKingY - 1 != Rook1Y && CompKingX != Rook2X && CompKingY - 1 != Rook2Y && CompKingY - 1 >= 0 && CompKingX + 1 != KingX && CompKingY - 2 != KingY && CompKingX != KingX && CompKingY - 2 != KingY && CompKingX - 1 != KingX && CompKingY - 2 != KingY)
+	if (CompKingY - 1 >= 0 && CompKingX + 1 != KingX && CompKingY - 2 != KingY && CompKingX != KingX && CompKingY - 2 != KingY && CompKingX - 1 != KingX && CompKingY - 2 != KingY)
 	{
-		CompKingY--;
-		return;
+		if (CompKingX != Rook1X && CompKingY - 1 != Rook1Y && CompKingX != Rook2X && CompKingY - 1 != Rook2Y)
+		{
+			CompKingY--;
+			return;
+		}
+		else if (CompKingX == Rook1X && CompKingY - 1 == Rook1Y && CompKingX != Rook2X && CompKingY - 1 != Rook2Y)
+		{
+			CompKingY--;
+			Rook1X = BoardSize + 1;
+			Rook1Y = BoardSize + 1;
+			return;
+		}
+		else if (CompKingX == Rook2X && CompKingY - 1 == Rook2Y && CompKingX != Rook1X && CompKingY - 1 != Rook1Y)
+		{
+			CompKingY--;
+			Rook2X = BoardSize + 1;
+			Rook2Y = BoardSize + 1;
+			return;
+		}
 	}
-	else if (CompKingX + 1 != Rook1X && CompKingY - 1 != Rook1Y && CompKingX + 1 != Rook2X && CompKingY - 1 != Rook2Y && CompKingX + 1 != BoardSize && CompKingY - 1 >= 0 && CompKingX + 2 != KingX && CompKingY != KingY && CompKingX + 2 != KingX && CompKingY - 1 != KingY && CompKingX + 2 != KingX && CompKingY - 2 != KingY && CompKingX + 1 != KingX && CompKingY - 2 != KingY && CompKingX != KingX && CompKingY - 2 != KingY)
+	if (CompKingX + 1 != BoardSize && CompKingY - 1 >= 0 && CompKingX + 2 != KingX && CompKingY != KingY && CompKingX + 2 != KingX && CompKingY - 1 != KingY && CompKingX + 2 != KingX && CompKingY - 2 != KingY && CompKingX + 1 != KingX && CompKingY - 2 != KingY && CompKingX != KingX && CompKingY - 2 != KingY)
 	{
-		CompKingX++;
-		CompKingY--;
-		return;
+		if (CompKingX + 1 != Rook1X && CompKingY - 1 != Rook1Y && CompKingX + 1 != Rook2X && CompKingY - 1 != Rook2Y)
+		{
+			CompKingX++;
+			CompKingY--;
+			return;
+		}
+		else if (CompKingX + 1 == Rook1X && CompKingY - 1 == Rook1Y && Rook1X != Rook2X && Rook1Y != Rook2Y)
+		{
+			CompKingX++;
+			CompKingY--;
+			Rook1X = BoardSize + 1;
+			Rook1Y = BoardSize + 1;
+			return;
+		}
+		else if (CompKingX + 1 == Rook2X && CompKingY - 1 == Rook2Y && Rook1X != Rook2X && Rook1Y != Rook2Y)
+		{
+			CompKingX++;
+			CompKingY--;
+			Rook2X = BoardSize + 2;
+			Rook2Y = BoardSize + 2;
+			return;
+		}
 	}
-	else
-	{
-		if (CompKingX == Rook1X || CompKingX == Rook2X || CompKingY == Rook1Y || CompKingY == Rook2Y)
-			KingIsInCheck = 1;
-		end = 1;
-	}
+
+	if (CompKingX == Rook1X || CompKingX == Rook2X || CompKingY == Rook1Y || CompKingY == Rook2Y)
+		KingIsInCheck = 1;
+	end = 1;
 }
 
 int MovesCounter = 1;
@@ -144,8 +294,18 @@ back:
 
 	while (!GameHasEnded)
 	{
-		
 		KingIsInCheck = 0;
+
+		if (Figure == '1' && Rook1X > BoardSize)
+		{
+			cout << "Invalid figure! Please try again: ";
+			goto back;
+		}
+		if (Figure == '2' && Rook2X > BoardSize)
+		{
+			cout << "Invalid figure! Please try again: ";
+			goto back;
+		}
 
 		if ((Figure != '1') && (Figure != 'K') && (Figure != '2'))
 		{
@@ -166,6 +326,16 @@ back:
 			KingY = int(Y - 97);
 
 			CompKingMove(BoardSize, CompKingX, CompKingY, KingX, KingY, Rook1X, Rook1Y, Rook2X, Rook2Y, GameHasEnded, KingIsInCheck);
+			if (GameHasEnded)
+			{
+				if (!KingIsInCheck)
+				{
+					cout << "The game is a draw!";
+					return;
+				}
+				cout << "You won with " << MovesCounter << " moves!";
+				return;
+			}
 			BoardPrint(BoardSize, CompKingX, CompKingY, KingX, KingY, Rook1X, Rook1Y, Rook2X, Rook2Y);
 		}
 		if (Figure == '1')
@@ -322,6 +492,12 @@ back:
 				return;
 			}
 			BoardPrint(BoardSize, CompKingX, CompKingY, KingX, KingY, Rook1X, Rook1Y, Rook2X, Rook2Y);
+		}
+
+		if (Rook1X > BoardSize && Rook2X > BoardSize)
+		{
+			cout << "The game is a draw!";
+			return;
 		}
 		MovesCounter++;
 		cin >> Figure >> Y >> X;
